@@ -2,6 +2,7 @@ const { Router } = require("express");
 const path = require('path');
 const upload = require("../config/multer");
 const Data = require("../models/Data");
+const channel = require('../config/queue')
 
 const dataRouter = Router()
 
@@ -24,6 +25,7 @@ dataRouter.get('/data/:id', async (req, res) => {
 
 })
 dataRouter.post('/data', upload.single('file'), async (req, res) => {
+    channel('1')
     const { name, age } = req.body
     // validation helper or middleware
     if (!name || !age) return res.status(422).json({ error: 'No name or age' })
